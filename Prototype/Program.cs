@@ -14,7 +14,8 @@ namespace Prototype
              Console.WriteLine("name = {0}, datetime = {1}, hashCode = {2}, vision = {3}",
                  v1.GetName(), v1.GetDateTime(), v1.GetHashCode(), v1.GetVisionNum());
 
-             Video v2 = v1.ShallowCopy();
+             Video v2 = v1.DeepCopy();
+             // Video v2 = v1.XMLDeepCopy();
              v2.SetDateTime(DateTime.Today);
              v2.SetVisionNum(2);
              Console.WriteLine("name = {0}, datetime = {1}, hashCode = {2}, vision = {3}", 

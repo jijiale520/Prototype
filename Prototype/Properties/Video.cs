@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 
 namespace Prototype.Properties
 {
+    [Serializable]
     public class Vision
     {
         public int vision;
@@ -11,6 +15,8 @@ namespace Prototype.Properties
             this.vision = _vision;
         }
     }
+    
+    [Serializable]
     public class Video
     {
         private string name;
@@ -20,6 +26,29 @@ namespace Prototype.Properties
         {
             Video obj = (Video)this.MemberwiseClone();
             return obj;
+        }
+
+        public Video DeepCopy()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, this);
+                ms.Position = 0;
+                return (Video)formatter.Deserialize(ms);
+            }
+        }
+
+        public Video XMLDeepCopy()
+        {
+            XmlSerializer xml = new XmlSerializer(typeof(Video));
+            using (MemoryStream ms = new MemoryStream()) //创建内存流
+            {
+                //将对象序列化到内存中
+                xml.Serialize(ms, this);
+                ms.Position = 0; //将内存流的位置设为0
+                return (Video) xml.Deserialize(ms); //继续反序列化
+            }
         }
 
         public string GetName()
